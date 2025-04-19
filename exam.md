@@ -60,7 +60,7 @@ CREATE TABLE groups (
   id SERIAL PRIMARY KEY,
   name VARCHAR(50) NOT NULL,
   course_id INTEGER REFERENCES courses(id),
-  teacher_id INTEGER REFERENCES teachers(id),
+  teacher_id INTEGER REFERENCES staffs(id),
   start_date DATE NOT NULL,
   end_date DATE,
   schedule TEXT,
