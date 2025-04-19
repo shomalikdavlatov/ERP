@@ -3,9 +3,11 @@ import AuthController from './../controllers/auth.controller.js';
 import { authenticateJWT } from './../middlewares/auth.middleware.js';
 import { authorizeRoles } from './../middlewares/role.middleware.js';
 
-export const authRouter = Router();
+const router = Router();
 const controller = new AuthController();
 
-authRouter.post('/login', (req, res) => controller.login(req, res));
-authRouter.get('/user', authenticateJWT, (req, res) => controller.user(req, res));
-authRouter.get('/admin', authenticateJWT, authorizeRoles('admin'), controller.admin);
+router.post('/login', (req, res) => controller.login(req, res));
+router.get('/user', authenticateJWT, (req, res) => controller.user(req, res));
+router.get('/admin', authenticateJWT, authorizeRoles('admin'), controller.admin);
+
+export default router;

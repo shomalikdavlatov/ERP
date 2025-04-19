@@ -1,12 +1,13 @@
 import express from 'express';
 import 'dotenv/config';
-import { authRouter } from './routes/auth.router.js';
+import routes from './routes/routes.js';
 
 
 const app = express();
 
 app.use(express.json());
-app.use('/api/auth', authRouter);
+routes().forEach(el => app.use(`/api${el[0]}`, el[1]));
+
 
 async function initApp() {
     try {
