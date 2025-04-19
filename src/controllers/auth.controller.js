@@ -4,12 +4,9 @@ export default class AuthController {
     constructor() {
         this.service = new AuthService();
     }
-    login(req, res) {
+    async login(req, res) {
         try {
-            const { username, role } = req.body;
-        if (!username || !role) return res.status(400).json({ message: "Username and role required!" });
-        const token = this.service.generateToken({ username, role });
-        return res.json({token});
+            res.status(200).json(await this.service.login(req.body));
         }
         catch (error) {
             res.status(error.status).json({ message: error.message });
