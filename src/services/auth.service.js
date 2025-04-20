@@ -1,12 +1,15 @@
 import { generateToken } from './../utils/jwt.js';
 import { client } from './../config/database.js';
 import CustomError from './../utils/custom.error.js';
+import bcrypt from 'bcrypt';
 
 export default class AuthService {
     async login({ username, password }) {
-        let user = await client.query("SELECT * FROM staffs WHERE username = $1 AND password = $2", [username, password]);
+        let user = await client.query("SELECT * FROM staffs WHERE username = $1;", [username]);
         user = user.rows[0];
         if (!user) throw new CustomError(401, "Unauthorized");
+        const match = await bcrypt.compare(password, user.password);
+        if (!match) throw new CustomError(401, "Unauthorized");
         return {
             success: true,
             token: generateToken({

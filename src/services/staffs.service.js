@@ -4,20 +4,20 @@ import bcrypt from 'bcrypt';
 
 export default class StaffsService {
     async getAllStaffs() {
-        let users = await client.query("SELECT id, first_name, last_name, username, role, position, phone, hire_date FROM staffs;");
-        users = users.rows;
+        const { rows: staffs } = await client.query("SELECT id, first_name, last_name, username, role, position, phone, hire_date FROM staffs;");
         return {
             success: true,
-            count: users.length,
-            staffs: users
+            count: staffs.length,
+            staffs: staffs
         };
     }
     async createStaff(data, role) {
+        if (!data) throw new CustomError(400, "Insufficient data to create staff!");
         let { firstName, lastName, username, password, position, phone, address } = data;
-        if (!firstName || !lastName || !username || !password || !position || !phone || !address) throw new CustomError(400, "Insufficient data to create staff");
+        if (!firstName || !lastName || !username || !password || !position || !phone || !address) throw new CustomError(400, "Insufficient data to create staff!");
         const { rows: staffs } = await client.query("SELECT id FROM staffs WHERE username = $1;", [username]);
-        if (staffs.length) throw new CustomError(409, "Username already exists");
-        password = await bcrypt.hash(password, 10);
+        if (staffs.length) throw new CustomError(409, "Username already exists!");
+        password = await bcrypt.hash(password, +process.env.BCRYPT_HASH);
         const { rows: staff } = await client.query("INSERT INTO staffs (first_name, last_name, username, password, role, position, phone, address) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING id, first_name, last_name, username, role, position, phone, address, hire_date;", [firstName, lastName, username, password, role, position, phone, address]);
         return {
             success: true,
