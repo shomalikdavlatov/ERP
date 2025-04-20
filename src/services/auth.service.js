@@ -13,6 +13,7 @@ export default class AuthService {
         return {
             success: true,
             token: generateToken({
+                id: user.id,
                 username: user.username,
                 role: user.role
             }),

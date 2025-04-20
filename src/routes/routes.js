@@ -4,6 +4,7 @@ import studentsRouter from './students.router.js';
 import teachersRouter from './teachers.router.js';
 import coursesRouter from './courses.router.js';
 import groupsRouter from './groups.router.js';
+import lessonsRouter from './lessons.router.js';
 
 export default () => [
     ['/auth', authRouter],
@@ -11,5 +12,6 @@ export default () => [
     ['/students', studentsRouter],
     ['/teachers', teachersRouter],
     ['/courses', coursesRouter],
-    ['/groups', groupsRouter]
+    ['/groups', groupsRouter],
+    ['/lessons', lessonsRouter]
 ];
