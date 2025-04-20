@@ -11,6 +11,11 @@ export default class StaffsService {
             staffs: staffs
         };
     }
+    async getStaffById(id) {
+        const { rows: staffs } = await client.query("SELECT id, first_name, last_name, username, role, position, phone, hire_date FROM staffs WHERE id = $1;", [id]);
+        if (!staffs.length) throw new CustomError(404, "Staff not found!");
+        return staffs[0];
+    }
     async createStaff(data, role) {
         if (!data) throw new CustomError(400, "Insufficient data to create staff!");
         let { firstName, lastName, username, password, position, phone, address } = data;

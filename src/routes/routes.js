@@ -3,11 +3,13 @@ import staffsRouter from './staffs.router.js';
 import studentsRouter from './students.router.js';
 import teachersRouter from './teachers.router.js';
 import coursesRouter from './courses.router.js';
+import groupsRouter from './groups.router.js';
 
 export default () => [
     ['/auth', authRouter],
     ['/staffs', staffsRouter],
     ['/students', studentsRouter],
     ['/teachers', teachersRouter],
-    ['/courses', coursesRouter]
+    ['/courses', coursesRouter],
+    ['/groups', groupsRouter]
 ];

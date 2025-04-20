@@ -14,6 +14,16 @@ export default class StaffsController {
             res.status(error.status).json({message: error.message});
         }
     }
+    async getStaffByIdController(req, res) {
+        try {
+            const staff = await this.service.getStaffById(req.params.id);
+            res.json(staff);
+        }
+        catch (error) {
+            if (!error.status) return res.status(500).json({ message: error.message });
+            res.status(error.status).json({message: error.message});
+        }
+    }
     async createTeacherController(req, res) {
         try {
             const staff = await this.service.createTeacher(req.body);
