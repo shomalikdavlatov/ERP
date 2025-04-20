@@ -21,7 +21,7 @@ export default class StaffsService {
         const { rows: staff } = await client.query("INSERT INTO staffs (first_name, last_name, username, password, role, position, phone, address) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING id, first_name, last_name, username, role, position, phone, address, hire_date;", [firstName, lastName, username, password, role, position, phone, address]);
         return {
             success: true,
-            staff: staff
+            staff: staff[0]
         };
     }
     async createTeacher(data) {

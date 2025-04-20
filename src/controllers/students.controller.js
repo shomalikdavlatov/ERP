@@ -10,6 +10,7 @@ export default class StudentsController {
             res.json(students);
         }
         catch (error) {
+            if (!error.status) return res.status(500).json({ message: error.message });
             res.status(error.status).json({message: error.message});
         }
     }
@@ -19,6 +20,7 @@ export default class StudentsController {
             res.json(student);
         }
         catch (error) {
+            if (!error.status) return res.status(500).json({ message: error.message });
             res.status(error.status).json({message: error.message});
         }
     }
@@ -28,6 +30,7 @@ export default class StudentsController {
             res.status(201).json(student);
         }
         catch (error) {
+            if (!error.status) return res.status(500).json({ message: error.message });
             res.status(error.status).json({message: error.message});
         }
     }

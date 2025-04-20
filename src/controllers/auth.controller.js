@@ -9,11 +9,9 @@ export default class AuthController {
             res.status(200).json(await this.service.login(req.body));
         }
         catch (error) {
+            if (!error.status) return res.status(500).json({ message: error.message });
             res.status(error.status).json({ message: error.message });
         }
-    }
-    register() {
-
     }
     user(req, res) {
         try {

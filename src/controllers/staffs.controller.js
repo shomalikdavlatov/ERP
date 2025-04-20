@@ -10,6 +10,7 @@ export default class StaffsController {
             res.json(staffs);
         }
         catch (error) {
+            if (!error.status) return res.status(500).json({ message: error.message });
             res.status(error.status).json({message: error.message});
         }
     }
@@ -19,6 +20,7 @@ export default class StaffsController {
             res.status(201).json(staff);
         }
         catch (error) {
+            if (!error.status) return res.status(500).json({ message: error.message });
             res.status(error.status).json({message: error.message});
         }
     }
@@ -28,6 +30,7 @@ export default class StaffsController {
             res.status(201).json(staff);
         }
         catch (error) {
+            if (!error.status) return res.status(500).json({ message: error.message });
             res.status(error.status).json({message: error.message});
         }
     }
@@ -37,6 +40,7 @@ export default class StaffsController {
             res.status(201).json(staff);
         }
         catch (error) {
+            if (!error.status) return res.status(500).json({ message: error.message });
             res.status(error.status).json({message: error.message});
         }
     }
