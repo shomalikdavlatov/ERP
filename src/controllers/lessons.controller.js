@@ -24,6 +24,26 @@ export default class LessonsController {
             res.status(error.status).json({ message: error.message });
         }
     }
+    async getAttendancesByLessonIdController(req, res) {
+        try {
+            const result = await this.service.getAttendancesByLessonId(req.params.lessonId);
+            res.json(result);
+        }
+        catch (error) {
+            if (!error.status) return res.status(500).json({ message: error.message });
+            res.status(error.status).json({ message: error.message });
+        }
+    }
+    async createAttendancesByLessonIdController(req, res) {
+        try {
+            const result = await this.service.createAttendancesByLessonId(req.params.lessonId, req.user.id, req.body);
+            res.status(201).json(result);
+        }
+        catch (error) {
+            if (!error.status) return res.status(500).json({ message: error.message });
+            res.status(error.status).json({ message: error.message });
+        }
+    }
     async createLessonController(req, res) {
         try {
             console.log(req.user);

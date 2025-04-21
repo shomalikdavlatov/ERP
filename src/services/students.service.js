@@ -16,6 +16,45 @@ export default class StudentsService {
         if (!students.length) throw new CustomError(404, "Student not found!");
         return students[0];
     }
+    async getAttendancesByStudentId(id, query) {
+        const student = await this.getStudentById(id);
+        const result = {
+            success: true,
+            student: {
+                id: student.id,
+                firstName: student.first_name,
+                lastName: student.last_name
+            },
+            attendance: {
+                lessons: []
+            }
+        };
+        const queries = [];
+        if (query.startDate) queries.push(' l.lesson_date <= ' + query.startDate);
+        if (query.endDate) queries.push(' l.lesson_date <= ' + query.endDate);
+        if (query.groupId) queries.push(' g.id = ' + query.groupId);
+        const { rows: details } = await client.query("SELECT l.id, l.title, l.lesson_date, l.group_id, g.name, d.status FROM attendance_details d LEFT JOIN attendance a ON a.id = d.attendance_id INNER JOIN lessons l ON a.lesson_id = l.id INNER JOIN groups g ON l.group_id = g.id" + (queries.length ? " WHERE" : "") + queries.join(' AND') + ';');
+        const count = { totalLessons: details.length, present: 0, absent: 0, late: 0 };
+        for (const { id, title, lesson_date: lessonDate, group_id, name, status } of details) {
+            count[status]++;
+            result.attendance.lessons.push({
+                lesson: {
+                    id, title, lessonDate,
+                    group: {
+                        id: group_id,
+                        name
+                    }
+                },
+                status
+            });
+        }
+        result.attendance = {
+            ...count,
+            presentPercentage: count.present / count.totalLessons * 100,
+            ...result.attendance
+        };
+        return result;
+    }
     async createStudent(data) {
         if (!data) throw new CustomError(400, "Insufficient data to create student!");
         let { firstName, lastName, username, password, phone, address, birthDate } = data;

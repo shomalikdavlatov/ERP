@@ -8,6 +8,7 @@ const controller = new StudentsController();
 
 router.get('/', authenticateJWT, authorizeRoles('superadmin', 'admin', 'teacher'), controller.getAllStudentsController.bind(controller));
 router.get('/:id', authenticateJWT, authorizeRoles('superadmin', 'admin', 'teacher'), controller.getStudentByIdController.bind(controller));
+router.get('/:studentId/attendance', authenticateJWT, controller.getAttendancesByStudentIdController.bind(controller));
 router.post('/', authenticateJWT, authorizeRoles('superadmin', 'admin'), controller.createStudentController.bind(controller));
 
 export default router;

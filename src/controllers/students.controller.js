@@ -24,6 +24,16 @@ export default class StudentsController {
             res.status(error.status).json({message: error.message});
         }
     }
+    async getAttendancesByStudentIdController(req, res) {
+        try {
+            const result = await this.service.getAttendancesByStudentId(req.params.studentId, req.query);
+            res.json(result);
+        }
+        catch (error) {
+            if (!error.status) return res.status(500).json({ message: error.message });
+            res.status(error.status).json({message: error.message});
+        }
+    }
     async createStudentController(req, res) {
         try {
             const student = await this.service.createStudent(req.body);

@@ -8,6 +8,8 @@ const controller = new LessonsController();
 
 router.get('/', authenticateJWT, authorizeRoles('superadmin', 'admin', 'teacher'), controller.getAllLessonsController.bind(controller));
 router.get('/:id', authenticateJWT, authorizeRoles('superadmin', 'admin', 'teacher'), controller.getLessonByIdController.bind(controller));
+router.get('/:lessonId/attendance', authenticateJWT, controller.getAttendancesByLessonIdController.bind(controller));
+router.post('/:lessonId/attendance', authenticateJWT, authorizeRoles('superadmin', 'admin', 'teacher'), controller.createAttendancesByLessonIdController.bind(controller));
 router.post('/', authenticateJWT, authorizeRoles('superadmin', 'admin', 'teacher'), controller.createLessonController.bind(controller));
 
 export default router;
