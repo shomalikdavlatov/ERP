@@ -7,9 +7,15 @@ export default class LessonsService {
         this.gService = new GroupService();
     }
     async getAllLessons() {
-
+        const { rows: lessons } = await client.query("SELECT l.id, g.id AS group_id, g.name, l.title, l.description, l.lesson_date, l.start_time, l.end_time, l.room_number FROM lessons l LEFT JOIN groups g ON l.group_id = g.id;");
+        return lessons;
     }
     async getLessonById(id) {
+        const { rows: lessons } = await client.query("SELECT l.id, g.id AS group_id, g.name, l.title, l.description, l.lesson_date, l.start_time, l.end_time, l.room_number FROM lessons l INNER JOIN groups g ON l.group_id = g.id WHERE l.id = $1;", [id]);
+        if (!lessons.length) throw new CustomError(404, "Lesson not found!");
+        return lessons[0];
+    }
+    async getAttendancesByLessonId(id) {
 
     }
     async createLesson(id, data) {
